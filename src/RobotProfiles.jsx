@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Heart, X, ChevronRight, Sparkles, Info, Zap } from 'lucide-react';
 
 const RobotProfiles = () => {
-  const [stage, setStage] = useState('landing'); // landing -> intro -> questionnaire -> analyzing -> results
+  const [stage, setStage] = useState('landing');
   const [answers, setAnswers] = useState({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [matches, setMatches] = useState([]);
@@ -42,6 +42,20 @@ const RobotProfiles = () => {
       key: "conflict"
     }
   ];
+
+  const getGradientColors = (colorName) => {
+    const gradients = {
+      'from-cyan-500 via-blue-500 to-purple-600': 'linear-gradient(135deg, #06b6d4, #3b82f6, #9333ea)',
+      'from-orange-500 via-pink-500 to-red-600': 'linear-gradient(135deg, #f97316, #ec4899, #dc2626)',
+      'from-purple-500 via-fuchsia-500 to-pink-600': 'linear-gradient(135deg, #a855f7, #d946ef, #db2777)',
+      'from-red-600 via-rose-500 to-pink-500': 'linear-gradient(135deg, #dc2626, #f43f5e, #ec4899)',
+      'from-green-500 via-emerald-500 to-cyan-500': 'linear-gradient(135deg, #22c55e, #10b981, #06b6d4)',
+      'from-indigo-600 via-purple-600 to-fuchsia-600': 'linear-gradient(135deg, #4f46e5, #9333ea, #c026d3)',
+      'from-cyan-500 via-blue-600 to-indigo-600': 'linear-gradient(135deg, #06b6d4, #2563eb, #4f46e5)',
+      'from-teal-500 via-cyan-500 to-blue-500': 'linear-gradient(135deg, #14b8a6, #06b6d4, #3b82f6)'
+    };
+    return gradients[colorName] || 'linear-gradient(135deg, #ec4899, #a855f7, #22d3ee)';
+  };
 
   const robots = [
     {
@@ -237,116 +251,84 @@ const RobotProfiles = () => {
 
   if (stage === 'landing') {
     return (
-      <div className="min-h-screen bg-black p-4 flex items-center justify-center relative overflow-hidden">
-        {/* Animated circuit board background */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px), linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px)',
-            backgroundSize: '50px 50px'
-          }} />
-        </div>
+      <div style={styles.container}>
+        <div style={styles.gridBackground} />
 
-        {/* Glowing particles */}
-        <div className="absolute inset-0 overflow-hidden">
+        <div style={styles.particlesContainer}>
           {[...Array(30)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-cyan-400 rounded-full animate-pulse"
               style={{
+                ...styles.particle,
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`,
-                boxShadow: '0 0 10px rgba(34, 211, 238, 0.8)'
+                animationDelay: `${Math.random() * 2}s`
               }}
             />
           ))}
         </div>
 
-        <div className="max-w-2xl w-full relative z-10">
-          <div className="bg-gradient-to-b from-purple-900/40 to-black/40 backdrop-blur-xl rounded-3xl p-8 border-2 border-pink-500/30 shadow-2xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 animate-pulse" />
-
-            {/* Heart with circuit pattern */}
-            <div className="relative mb-6">
-              <div className="text-center">
-                <div className="inline-block relative">
-                  <Heart className="w-24 h-24 text-pink-500 fill-pink-500 mx-auto drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Zap className="w-10 h-10 text-cyan-400 animate-pulse" />
-                  </div>
-                </div>
-              </div>
+        <div style={styles.contentWrapper}>
+          <div style={styles.card}>
+            <div style={styles.heartContainer}>
+              <Heart style={styles.heartIcon} />
+              <Zap style={styles.zapIcon} />
             </div>
 
-            <h1 className="text-6xl font-bold mb-2 text-center bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(236,72,153,0.5)]" style={{
-              textShadow: '0 0 30px rgba(236, 72, 153, 0.3)'
-            }}>
-              Love, Death & Robots
-            </h1>
+            <h1 style={styles.title}>Love, Death & Robots</h1>
 
-            <p className="text-cyan-300 mb-3 text-lg text-center font-light tracking-wide">
-              Valentine's Day 2026
-            </p>
-            <p className="text-purple-400 mb-12 text-sm text-center font-light tracking-widest uppercase">
-              Cyberpunk Warehouse • San Francisco
-            </p>
+            <p style={styles.subtitle}>Valentine's Day 2026</p>
+            <p style={styles.location}>CYBERPUNK WAREHOUSE • SAN FRANCISCO</p>
 
-            <div className="mb-12 relative">
-              <div className="text-center space-y-6">
-                <p className="text-2xl text-pink-300 font-light leading-relaxed">
-                  Looksmaxxed robots
-                </p>
+            <div style={styles.eventList}>
+              <p style={{...styles.eventItem, fontSize: '24px', color: '#f9a8d4'}}>
+                Looksmaxxed robots
+              </p>
 
-                <p className="text-2xl text-cyan-300 font-light leading-relaxed">
-                  The finest zoomer (and zoomette) DJs in the land
-                </p>
+              <p style={{...styles.eventItem, fontSize: '24px', color: '#67e8f9'}}>
+                The finest zoomer (and zoomette) DJs in the land
+              </p>
 
-                <p className="text-xl text-pink-300 font-light leading-relaxed">
-                  Whiteboards to mansplain or womansplain
-                  <br />
-                  <span className="text-purple-300">love, death, and robots</span>
-                </p>
+              <p style={{...styles.eventItem, fontSize: '20px', color: '#f9a8d4'}}>
+                Whiteboards to mansplain or womansplain
+                <br />
+                <span style={{color: '#c084fc'}}>love, death, and robots</span>
+              </p>
 
-                <p className="text-2xl text-purple-300 font-light leading-relaxed">
-                  A cage
-                  <span className="text-sm text-gray-500 ml-2">(for what? you'll see)</span>
-                </p>
-              </div>
-
-              {/* Decorative elements */}
-              <div className="absolute -left-8 top-0 w-px h-full bg-gradient-to-b from-transparent via-pink-500/50 to-transparent" />
-              <div className="absolute -right-8 top-0 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
+              <p style={{...styles.eventItem, fontSize: '24px', color: '#c084fc'}}>
+                A cage
+                <span style={{fontSize: '14px', color: '#6b7280', marginLeft: '8px'}}>(for what? you'll see)</span>
+              </p>
             </div>
 
-            <div className="text-center mb-8 space-y-2">
-              <p className="text-gray-300 text-base font-light">
+            <div style={styles.disclaimer}>
+              <p style={styles.disclaimerText}>
+                ⚠️ This is <strong>NOT</strong> a robot fight.
+                <br />
+                This is a day of <strong style={{color: '#f9a8d4'}}>robot LOVE</strong>. We will <strong>NOT</strong> be fighting.
+              </p>
+            </div>
+
+            <div style={styles.robotsWaiting}>
+              <p style={styles.robotsWaitingMain}>
                 The robots are waiting to meet you.
               </p>
-              <p className="text-gray-500 text-sm italic">
+              <p style={styles.robotsWaitingSecondary}>
                 But first, they need to know if you're worth their time.
-              </p>
-            </div>
-
-            <div className="bg-red-500/10 border-2 border-red-400/40 rounded-2xl p-4 mb-8 backdrop-blur-sm">
-              <p className="text-center text-red-300 text-sm font-light">
-                ⚠️ This is <span className="font-bold">NOT</span> a robot fight.
-                <br />
-                This is a day of <span className="font-bold text-pink-400">robot LOVE</span>. We will <span className="font-bold">NOT</span> be fighting.
               </p>
             </div>
 
             <button
               type="button"
-              onClick={() => {
-                console.log('Button clicked, changing stage to intro');
-                setStage('intro');
-              }}
-              className="w-full px-8 py-4 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 rounded-full font-bold hover:scale-105 transition text-xl text-white shadow-[0_0_30px_rgba(236,72,153,0.5)] hover:shadow-[0_0_50px_rgba(236,72,153,0.8)] border-2 border-pink-400/50"
+              onClick={() => setStage('intro')}
+              style={styles.button}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
             >
               Enter the Selection
             </button>
 
-            <p className="text-center text-xs text-gray-500 mt-4">
+            <p style={styles.notEveryone}>
               Not everyone makes it through
             </p>
           </div>
@@ -357,80 +339,57 @@ const RobotProfiles = () => {
 
   if (stage === 'intro') {
     return (
-      <div className="min-h-screen bg-black p-4 flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px), linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px)',
-            backgroundSize: '50px 50px'
-          }} />
-        </div>
+      <div style={styles.container}>
+        <div style={styles.gridBackground} />
 
-        <div className="absolute inset-0 overflow-hidden">
+        <div style={styles.particlesContainer}>
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-cyan-400 rounded-full animate-pulse"
               style={{
+                ...styles.particle,
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`,
-                boxShadow: '0 0 10px rgba(34, 211, 238, 0.8)'
+                animationDelay: `${Math.random() * 2}s`
               }}
             />
           ))}
         </div>
 
-        <div className="max-w-lg w-full relative z-10">
-          <div className="bg-gradient-to-b from-purple-900/40 to-black/40 backdrop-blur-xl rounded-3xl p-8 border-2 border-pink-500/30 shadow-2xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 animate-pulse" />
-
-            <div className="relative mb-6">
-              <div className="text-center">
-                <div className="inline-block relative">
-                  <Heart className="w-20 h-20 text-pink-500 fill-pink-500 mx-auto drop-shadow-[0_0_15px_rgba(236,72,153,0.8)]" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Zap className="w-8 h-8 text-cyan-400 animate-pulse" />
-                  </div>
-                </div>
-              </div>
+        <div style={styles.contentWrapperSmall}>
+          <div style={styles.card}>
+            <div style={styles.heartContainer}>
+              <Heart style={styles.heartIconMedium} />
+              <Zap style={styles.zapIconMedium} />
             </div>
 
-            <h1 className="text-5xl font-bold mb-4 text-center bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(236,72,153,0.5)]" style={{
-              textShadow: '0 0 30px rgba(236, 72, 153, 0.3)'
-            }}>
-              Love, Death & Robots
-            </h1>
+            <h1 style={styles.titleMedium}>Love, Death & Robots</h1>
 
-            <p className="text-cyan-300 mb-6 text-lg text-center font-light">
-              The robots want to meet <span className="text-pink-400 font-bold">YOU</span>.
+            <p style={styles.subtitleIntro}>
+              The robots want to meet <span style={{color: '#f9a8d4', fontWeight: 'bold'}}>YOU</span>.
             </p>
 
-            <div className="bg-cyan-500/10 border-2 border-cyan-400/40 rounded-2xl p-4 mb-6 relative overflow-hidden backdrop-blur-sm">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/20 rounded-full blur-3xl" />
-              <p className="text-sm text-cyan-200 mb-2 relative z-10">
-                <Sparkles className="inline mr-2 text-pink-400" size={16} />
-                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400">
+            <div style={styles.algoBox}>
+              <p style={styles.algoTitle}>
+                <Sparkles style={{display: 'inline', marginRight: '8px', color: '#f9a8d4', width: '16px', height: '16px'}} />
+                <span style={{fontWeight: 'bold', background: 'linear-gradient(to right, #f9a8d4, #67e8f9)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
                   ALGORITHM-ASSISTED SELECTION™
                 </span>
               </p>
-              <p className="text-xs text-gray-300 relative z-10">
+              <p style={styles.algoText}>
                 Answer 6 questions. Our robots will review your profile and decide if they want to meet you at tonight's event.
               </p>
             </div>
 
-            <p className="text-gray-400 text-sm mb-6 italic text-center">
+            <p style={styles.warningText}>
               (Warning: Robots have standards. Not everyone makes it through.)
             </p>
 
             <button
-              onClick={() => {
-                console.log('Button clicked, changing stage to questionnaire');
-                setStage('questionnaire');
-              }}
-              className="w-full px-6 py-4 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 rounded-full font-semibold transition-transform hover:scale-105 text-lg text-white border-2 border-pink-400/50"
-              style={{
-                boxShadow: '0 0 30px rgba(236, 72, 153, 0.5)'
-              }}
+              onClick={() => setStage('questionnaire')}
+              style={styles.button}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
             >
               Begin Selection Process
             </button>
@@ -443,34 +402,43 @@ const RobotProfiles = () => {
   if (stage === 'questionnaire') {
     const q = questions[currentQuestion];
     return (
-      <div className="min-h-screen bg-black p-4 flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px), linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px)',
-            backgroundSize: '50px 50px'
-          }} />
-        </div>
+      <div style={styles.container}>
+        <div style={styles.gridBackground} />
 
-        <div className="max-w-lg w-full relative z-10">
-          <div className="bg-gradient-to-b from-purple-900/40 to-black/40 backdrop-blur-xl rounded-3xl p-8 border-2 border-purple-500/30 shadow-2xl">
-            <div className="text-center mb-6">
-              <div className="text-sm text-cyan-400 mb-2 font-mono">Question {currentQuestion + 1} of {questions.length}</div>
-              <div className="w-full bg-gray-800/50 rounded-full h-3 mb-4 border border-purple-500/30 overflow-hidden">
+        <div style={styles.contentWrapperSmall}>
+          <div style={styles.card}>
+            <div style={{textAlign: 'center', marginBottom: '24px'}}>
+              <div style={styles.questionCounter}>Question {currentQuestion + 1} of {questions.length}</div>
+              <div style={styles.progressBarContainer}>
                 <div
-                  className="h-3 rounded-full transition-all duration-300 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 shadow-[0_0_20px_rgba(236,72,153,0.6)]"
-                  style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+                  style={{
+                    ...styles.progressBar,
+                    width: `${((currentQuestion + 1) / questions.length) * 100}%`
+                  }}
                 />
               </div>
-              <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 mb-2">{q.q}</h2>
-              <p className="text-gray-400 text-sm">The robots are watching...</p>
+              <h2 style={styles.questionTitle}>{q.q}</h2>
+              <p style={styles.robotsWatchingText}>The robots are watching...</p>
             </div>
 
-            <div className="space-y-3">
+            <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
               {q.options.map((option, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleAnswer(option)}
-                  className="w-full px-6 py-4 bg-purple-900/20 hover:bg-purple-900/40 border-2 border-purple-500/30 hover:border-pink-500/60 rounded-2xl font-medium text-white text-left transition-all hover:scale-102 hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] backdrop-blur-sm"
+                  style={styles.optionButton}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(88, 28, 135, 0.4)';
+                    e.currentTarget.style.borderColor = 'rgba(236, 72, 153, 0.6)';
+                    e.currentTarget.style.transform = 'scale(1.02)';
+                    e.currentTarget.style.boxShadow = '0 0 20px rgba(236, 72, 153, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(88, 28, 135, 0.2)';
+                    e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
                 >
                   {option}
                 </button>
@@ -484,42 +452,34 @@ const RobotProfiles = () => {
 
   if (stage === 'analyzing') {
     return (
-      <div className="min-h-screen bg-black p-4 flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute inset-0 animate-slideGrid" style={{
-            backgroundImage: 'linear-gradient(90deg, rgba(236, 72, 153, 0.2) 1px, transparent 1px), linear-gradient(rgba(236, 72, 153, 0.2) 1px, transparent 1px)',
-            backgroundSize: '30px 30px'
-          }} />
-        </div>
+      <div style={styles.container}>
+        <div style={styles.animatedGridBackground} />
 
-        <div className="max-w-lg w-full relative z-10">
-          <div className="bg-gradient-to-b from-purple-900/40 to-black/40 backdrop-blur-xl rounded-3xl p-8 border-2 border-cyan-500/30 shadow-2xl">
-            <div className="text-center mb-8">
-              <div className="relative w-24 h-24 mx-auto mb-6">
-                <div className="absolute inset-0 border-4 border-pink-500/30 border-t-pink-500 rounded-full animate-spin"
-                     style={{ boxShadow: '0 0 30px rgba(236, 72, 153, 0.5)' }} />
-                <div className="absolute inset-2 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin-reverse"
-                     style={{ boxShadow: '0 0 20px rgba(34, 211, 238, 0.5)' }} />
-                <Heart className="absolute inset-0 m-auto w-8 h-8 text-pink-400 fill-pink-400 animate-pulse" />
+        <div style={styles.contentWrapperSmall}>
+          <div style={styles.card}>
+            <div style={{textAlign: 'center', marginBottom: '32px'}}>
+              <div style={styles.loadingContainer}>
+                <div style={styles.loadingSpinner} />
+                <div style={styles.loadingSpinnerReverse} />
+                <Heart style={styles.loadingHeart} />
               </div>
 
-              <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 mb-2">
+              <h2 style={styles.analyzingTitle}>
                 Processing Your Profile...
               </h2>
-              <p className="text-cyan-300 text-sm">The robots are making their decisions</p>
+              <p style={styles.analyzingSubtitle}>The robots are making their decisions</p>
             </div>
 
-            <div className="space-y-3">
+            <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
               {analysisMessages.map((msg, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-3 text-cyan-300 text-sm bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-3 backdrop-blur-sm animate-fadeIn"
                   style={{
-                    animationDelay: `${idx * 0.1}s`,
-                    boxShadow: '0 0 15px rgba(34, 211, 238, 0.2)'
+                    ...styles.analysisMessage,
+                    animationDelay: `${idx * 0.1}s`
                   }}
                 >
-                  <ChevronRight size={16} className="text-pink-400" />
+                  <ChevronRight size={16} style={{color: '#f9a8d4', flexShrink: 0}} />
                   <span>{msg}</span>
                 </div>
               ))}
@@ -536,13 +496,14 @@ const RobotProfiles = () => {
             from { opacity: 0; transform: translateX(-20px); }
             to { opacity: 1; transform: translateX(0); }
           }
-          @keyframes spin-reverse {
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          @keyframes spinReverse {
             from { transform: rotate(360deg); }
             to { transform: rotate(0deg); }
           }
-          .animate-slideGrid { animation: slideGrid 20s linear infinite; }
-          .animate-fadeIn { animation: fadeIn 0.5s ease-out both; }
-          .animate-spin-reverse { animation: spin-reverse 1s linear infinite; }
         `}</style>
       </div>
     );
@@ -552,53 +513,57 @@ const RobotProfiles = () => {
     if (showingRobot) {
       const robot = showingRobot;
       return (
-        <div className="min-h-screen bg-black p-4 flex items-center justify-center relative overflow-hidden">
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute inset-0" style={{
-              backgroundImage: 'linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px), linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px)',
-              backgroundSize: '50px 50px'
-            }} />
-          </div>
+        <div style={styles.container}>
+          <div style={styles.gridBackground} />
 
-          <div className="max-w-md w-full relative z-10">
-            <div className="bg-gradient-to-b from-purple-900/40 to-black/40 backdrop-blur-xl rounded-3xl overflow-hidden border-2 border-purple-500/30 shadow-2xl">
-              <div className={`bg-gradient-to-br ${robot.color} h-96 flex items-center justify-center relative`}>
-                <div className="absolute inset-0 bg-black/20" />
-                <div className="text-9xl relative z-10 drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">{robot.image}</div>
+          <div style={styles.contentWrapperMedium}>
+            <div style={{...styles.card, padding: 0}}>
+              <div style={{
+                background: getGradientColors(robot.color),
+                height: '384px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'relative'
+              }}>
+                <div style={{position: 'absolute', inset: 0, backgroundColor: 'rgba(0, 0, 0, 0.2)'}} />
+                <div style={{fontSize: '96px', position: 'relative', zIndex: 10, filter: 'drop-shadow(0 0 30px rgba(0, 0, 0, 0.8))'}}>{robot.image}</div>
                 <button
                   onClick={() => setShowingRobot(null)}
-                  className="absolute top-4 left-4 bg-black/70 backdrop-blur px-4 py-2 rounded-full text-sm text-white hover:bg-black/90 border border-pink-500/50"
+                  style={styles.backButton}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.9)'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'}
                 >
                   ← Back
                 </button>
               </div>
 
-              <div className="p-6">
-                <div className="flex items-baseline gap-3 mb-1">
-                  <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400">{robot.name}</h2>
-                  <span className="text-gray-400">{robot.age}</span>
+              <div style={{padding: '24px'}}>
+                <div style={{display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '4px'}}>
+                  <h2 style={styles.robotName}>{robot.name}</h2>
+                  <span style={{color: '#9ca3af'}}>{robot.age}</span>
                 </div>
 
-                <p className="text-cyan-300 text-sm mb-3">{robot.height}</p>
+                <p style={{color: '#67e8f9', fontSize: '14px', marginBottom: '12px'}}>{robot.height}</p>
 
-                <div className="flex flex-wrap gap-2 mb-4">
+                <div style={{display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px'}}>
                   {robot.badges?.map((badge, idx) => (
-                    <span key={idx} className="px-3 py-1 bg-cyan-500/20 border border-cyan-500/40 rounded-lg text-xs text-cyan-200 backdrop-blur-sm">
+                    <span key={idx} style={styles.badge}>
                       {badge}
                     </span>
                   ))}
                 </div>
 
-                <p className="text-gray-300 mb-4 leading-relaxed whitespace-pre-line text-sm">{robot.bio}</p>
+                <p style={{color: '#d1d5db', marginBottom: '16px', lineHeight: 1.5, whiteSpace: 'pre-line', fontSize: '14px'}}>{robot.bio}</p>
 
-                <div className="flex items-center gap-2 text-sm text-gray-400 mb-4 bg-purple-500/10 p-3 rounded-lg border border-purple-500/30">
-                  <Info size={16} className="text-pink-400" />
+                <div style={styles.specsBox}>
+                  <Info size={16} style={{color: '#f9a8d4', flexShrink: 0}} />
                   <span>{robot.specs}</span>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <div style={{display: 'flex', flexWrap: 'wrap', gap: '8px'}}>
                   {robot.interests.map((interest, idx) => (
-                    <span key={idx} className="px-3 py-1 bg-pink-500/20 border border-pink-500/30 rounded-full text-xs text-pink-200">
+                    <span key={idx} style={styles.interestBadge}>
                       {interest}
                     </span>
                   ))}
@@ -611,31 +576,26 @@ const RobotProfiles = () => {
     }
 
     return (
-      <div className="min-h-screen bg-black p-4 flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px), linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px)',
-            backgroundSize: '50px 50px'
-          }} />
-        </div>
+      <div style={styles.container}>
+        <div style={styles.gridBackground} />
 
-        <div className="max-w-2xl w-full relative z-10">
-          <div className="bg-gradient-to-b from-purple-900/40 to-black/40 backdrop-blur-xl rounded-3xl p-8 border-2 border-pink-500/30 shadow-2xl">
-            <div className="relative mb-6">
-              <Heart className="w-16 h-16 text-pink-500 fill-pink-500 mx-auto drop-shadow-[0_0_20px_rgba(236,72,153,0.8)] mb-4" />
-              <h1 className="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+        <div style={styles.contentWrapperLarge}>
+          <div style={styles.card}>
+            <div style={{position: 'relative', marginBottom: '24px'}}>
+              <Heart style={{...styles.heartIconMedium, margin: '0 auto 16px', display: 'block'}} />
+              <h1 style={styles.resultsTitle}>
                 Selection Complete
               </h1>
             </div>
-            <p className="text-center text-cyan-300 mb-6 text-lg">
+            <p style={styles.matchCountText}>
               {matches.length} robot{matches.length !== 1 ? 's' : ''} {matches.length !== 1 ? 'want' : 'wants'} to meet you tonight
             </p>
 
             {matches.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-6xl mb-4">😬</div>
-                <p className="text-gray-300 text-lg mb-2">Oof. No matches.</p>
-                <p className="text-gray-500 text-sm mb-6">
+              <div style={{textAlign: 'center', padding: '48px 0'}}>
+                <div style={{fontSize: '60px', marginBottom: '16px'}}>😬</div>
+                <p style={{color: '#d1d5db', fontSize: '18px', marginBottom: '8px'}}>Oof. No matches.</p>
+                <p style={{color: '#6b7280', fontSize: '14px', marginBottom: '24px'}}>
                   The robots have spoken. Maybe lower your red flags?
                 </p>
                 <button
@@ -645,42 +605,57 @@ const RobotProfiles = () => {
                     setAnswers({});
                     setAnalysisMessages([]);
                   }}
-                  className="px-6 py-3 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 rounded-full font-semibold hover:scale-105 transition shadow-[0_0_30px_rgba(236,72,153,0.5)] border-2 border-pink-400/50"
+                  style={styles.button}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
                   Try Again
                 </button>
               </div>
             ) : (
               <>
-                <div className="mb-6 p-5 bg-gradient-to-r from-pink-500/10 to-cyan-500/10 border-2 border-pink-500/40 rounded-2xl backdrop-blur-sm">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 mb-1">
+                <div style={styles.compatibilityBox}>
+                  <div style={{textAlign: 'center'}}>
+                    <div style={styles.compatibilityScore}>
                       {matches.length}/{robots.length} Robots Selected You
                     </div>
-                    <div className="text-sm text-gray-300">
-                      Compatibility score: <span className="text-cyan-400 font-bold">{Math.round((matches.length / robots.length) * 100)}%</span>
+                    <div style={{fontSize: '14px', color: '#d1d5db'}}>
+                      Compatibility score: <span style={{color: '#67e8f9', fontWeight: 'bold'}}>{Math.round((matches.length / robots.length) * 100)}%</span>
                     </div>
                   </div>
                 </div>
 
-                <h3 className="text-xl font-bold text-pink-400 mb-4 flex items-center gap-2">
-                  <Heart className="fill-pink-400" size={20} />
+                <h3 style={styles.sectionTitle}>
+                  <Heart style={{fill: '#f9a8d4', color: '#f9a8d4', width: '20px', height: '20px', marginRight: '8px'}} />
                   Robots Who Want You:
                 </h3>
-                <div className="space-y-4 mb-6">
+                <div style={{display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px'}}>
                   {matches.map((robot, idx) => (
                     <div
                       key={idx}
                       onClick={() => setShowingRobot(robot)}
-                      className={`bg-gradient-to-r ${robot.color} p-4 rounded-2xl cursor-pointer hover:scale-102 transition border-2 border-white/20 hover:border-white/40 shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)]`}
+                      style={{
+                        ...styles.matchCard,
+                        background: getGradientColors(robot.color)
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+                        e.currentTarget.style.boxShadow = '0 0 30px rgba(236, 72, 153, 0.5)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                        e.currentTarget.style.boxShadow = '0 0 20px rgba(236, 72, 153, 0.3)';
+                      }}
                     >
-                      <div className="flex items-center gap-4">
-                        <div className="text-5xl drop-shadow-lg">{robot.image}</div>
-                        <div className="flex-1">
-                          <h3 className="font-bold text-xl text-white drop-shadow-md">{robot.name}</h3>
-                          <p className="text-white/90 text-sm italic">"{robot.reason}"</p>
+                      <div style={{display: 'flex', alignItems: 'center', gap: '16px'}}>
+                        <div style={{fontSize: '48px', filter: 'drop-shadow(0 4px 3px rgb(0 0 0 / 0.3))'}}>{robot.image}</div>
+                        <div style={{flex: 1}}>
+                          <h3 style={{fontWeight: 'bold', fontSize: '20px', color: 'white', filter: 'drop-shadow(0 2px 2px rgb(0 0 0 / 0.3))', marginBottom: '4px'}}>{robot.name}</h3>
+                          <p style={{color: 'rgba(255, 255, 255, 0.9)', fontSize: '14px', fontStyle: 'italic'}}>"{robot.reason}"</p>
                         </div>
-                        <Heart className="text-white drop-shadow-lg" fill="white" size={24} />
+                        <Heart style={{color: 'white', fill: 'white', width: '24px', height: '24px', filter: 'drop-shadow(0 4px 3px rgb(0 0 0 / 0.3))'}} />
                       </div>
                     </div>
                   ))}
@@ -688,23 +663,20 @@ const RobotProfiles = () => {
 
                 {rejections.length > 0 && (
                   <>
-                    <h3 className="text-xl font-bold text-gray-500 mb-4 flex items-center gap-2">
-                      <X size={20} />
+                    <h3 style={{...styles.sectionTitle, color: '#6b7280'}}>
+                      <X style={{width: '20px', height: '20px', marginRight: '8px'}} />
                       Robots Who Passed:
                     </h3>
-                    <div className="space-y-3 mb-6">
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px'}}>
                       {rejections.map((robot, idx) => (
-                        <div
-                          key={idx}
-                          className="bg-gray-900/50 p-4 rounded-2xl border-2 border-gray-700/50 backdrop-blur-sm"
-                        >
-                          <div className="flex items-center gap-4">
-                            <div className="text-3xl opacity-40">{robot.image}</div>
-                            <div className="flex-1">
-                              <h3 className="font-bold text-lg text-gray-400">{robot.name}</h3>
-                              <p className="text-gray-500 text-sm italic">"{robot.reason}"</p>
+                        <div key={idx} style={styles.rejectCard}>
+                          <div style={{display: 'flex', alignItems: 'center', gap: '16px'}}>
+                            <div style={{fontSize: '32px', opacity: 0.4}}>{robot.image}</div>
+                            <div style={{flex: 1}}>
+                              <h3 style={{fontWeight: 'bold', fontSize: '18px', color: '#9ca3af', marginBottom: '4px'}}>{robot.name}</h3>
+                              <p style={{color: '#6b7280', fontSize: '14px', fontStyle: 'italic'}}>"{robot.reason}"</p>
                             </div>
-                            <X className="text-gray-600" size={24} />
+                            <X style={{color: '#4b5563', width: '24px', height: '24px'}} />
                           </div>
                         </div>
                       ))}
@@ -712,11 +684,11 @@ const RobotProfiles = () => {
                   </>
                 )}
 
-                <div className="bg-cyan-500/10 border-2 border-cyan-400/40 rounded-2xl p-4 mb-6 backdrop-blur-sm">
-                  <p className="text-sm text-cyan-200 text-center">
+                <div style={styles.eventInfoBox}>
+                  <p style={{fontSize: '14px', color: '#a5f3fc', textAlign: 'center', margin: 0}}>
                     🎟️ Your {matches.length} match{matches.length !== 1 ? 'es' : ''} will be waiting for you at the event.
                     <br />
-                    <span className="text-xs text-gray-400">Cover charge grants you exclusive access.</span>
+                    <span style={{fontSize: '12px', color: '#9ca3af'}}>Cover charge grants you exclusive access.</span>
                   </p>
                 </div>
 
@@ -729,7 +701,15 @@ const RobotProfiles = () => {
                     setMatches([]);
                     setRejections([]);
                   }}
-                  className="w-full px-6 py-3 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 rounded-full font-semibold hover:scale-105 transition shadow-[0_0_30px_rgba(236,72,153,0.5)] hover:shadow-[0_0_50px_rgba(236,72,153,0.8)] border-2 border-pink-400/50"
+                  style={{...styles.button, marginTop: 0}}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.boxShadow = '0 0 50px rgba(236, 72, 153, 0.8)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.boxShadow = '0 0 30px rgba(236, 72, 153, 0.5)';
+                  }}
                 >
                   Start Over
                 </button>
@@ -742,6 +722,494 @@ const RobotProfiles = () => {
   }
 
   return null;
+};
+
+const styles = {
+  container: {
+    minHeight: '100vh',
+    backgroundColor: '#000',
+    padding: '16px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    overflow: 'hidden'
+  },
+  gridBackground: {
+    position: 'absolute',
+    inset: 0,
+    opacity: 0.2,
+    backgroundImage: 'linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px), linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px)',
+    backgroundSize: '50px 50px'
+  },
+  animatedGridBackground: {
+    position: 'absolute',
+    inset: 0,
+    opacity: 0.3,
+    backgroundImage: 'linear-gradient(90deg, rgba(236, 72, 153, 0.2) 1px, transparent 1px), linear-gradient(rgba(236, 72, 153, 0.2) 1px, transparent 1px)',
+    backgroundSize: '30px 30px',
+    animation: 'slideGrid 20s linear infinite'
+  },
+  particlesContainer: {
+    position: 'absolute',
+    inset: 0,
+    overflow: 'hidden'
+  },
+  particle: {
+    position: 'absolute',
+    width: '4px',
+    height: '4px',
+    backgroundColor: '#22d3ee',
+    borderRadius: '50%',
+    boxShadow: '0 0 10px rgba(34, 211, 238, 0.8)',
+    animation: 'pulse 2s ease-in-out infinite'
+  },
+  contentWrapper: {
+    maxWidth: '800px',
+    width: '100%',
+    position: 'relative',
+    zIndex: 10
+  },
+  contentWrapperSmall: {
+    maxWidth: '512px',
+    width: '100%',
+    position: 'relative',
+    zIndex: 10
+  },
+  contentWrapperMedium: {
+    maxWidth: '448px',
+    width: '100%',
+    position: 'relative',
+    zIndex: 10
+  },
+  contentWrapperLarge: {
+    maxWidth: '672px',
+    width: '100%',
+    position: 'relative',
+    zIndex: 10
+  },
+  card: {
+    background: 'linear-gradient(to bottom, rgba(88, 28, 135, 0.4), rgba(0, 0, 0, 0.4))',
+    backdropFilter: 'blur(24px)',
+    borderRadius: '24px',
+    padding: '32px',
+    border: '2px solid rgba(236, 72, 153, 0.3)',
+    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+    position: 'relative',
+    overflow: 'hidden'
+  },
+  heartContainer: {
+    position: 'relative',
+    marginBottom: '24px',
+    textAlign: 'center'
+  },
+  heartIcon: {
+    width: '96px',
+    height: '96px',
+    color: '#ec4899',
+    fill: '#ec4899',
+    filter: 'drop-shadow(0 0 20px rgba(236, 72, 153, 0.8))',
+    margin: '0 auto',
+    display: 'block'
+  },
+  heartIconMedium: {
+    width: '80px',
+    height: '80px',
+    color: '#ec4899',
+    fill: '#ec4899',
+    filter: 'drop-shadow(0 0 15px rgba(236, 72, 153, 0.8))',
+    margin: '0 auto',
+    display: 'block'
+  },
+  zapIcon: {
+    position: 'absolute',
+    width: '40px',
+    height: '40px',
+    color: '#22d3ee',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    animation: 'pulse 2s ease-in-out infinite'
+  },
+  zapIconMedium: {
+    position: 'absolute',
+    width: '32px',
+    height: '32px',
+    color: '#22d3ee',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    animation: 'pulse 2s ease-in-out infinite'
+  },
+  title: {
+    fontSize: '48px',
+    fontWeight: 'bold',
+    marginBottom: '8px',
+    textAlign: 'center',
+    background: 'linear-gradient(to right, #f9a8d4, #c084fc, #67e8f9)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    filter: 'drop-shadow(0 0 30px rgba(236, 72, 153, 0.5))',
+    textShadow: '0 0 30px rgba(236, 72, 153, 0.3)'
+  },
+  titleMedium: {
+    fontSize: '40px',
+    fontWeight: 'bold',
+    marginBottom: '16px',
+    textAlign: 'center',
+    background: 'linear-gradient(to right, #f9a8d4, #c084fc, #67e8f9)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    filter: 'drop-shadow(0 0 30px rgba(236, 72, 153, 0.5))',
+    textShadow: '0 0 30px rgba(236, 72, 153, 0.3)'
+  },
+  subtitle: {
+    color: '#67e8f9',
+    marginBottom: '12px',
+    fontSize: '18px',
+    textAlign: 'center',
+    fontWeight: 300,
+    letterSpacing: '0.05em'
+  },
+  subtitleIntro: {
+    color: '#67e8f9',
+    marginBottom: '24px',
+    fontSize: '18px',
+    textAlign: 'center',
+    fontWeight: 300
+  },
+  location: {
+    color: '#c084fc',
+    marginBottom: '48px',
+    fontSize: '14px',
+    textAlign: 'center',
+    fontWeight: 300,
+    letterSpacing: '0.1em',
+    textTransform: 'uppercase'
+  },
+  eventList: {
+    marginBottom: '48px',
+    position: 'relative',
+    textAlign: 'center'
+  },
+  eventItem: {
+    fontWeight: 300,
+    lineHeight: 1.75,
+    margin: '24px 0'
+  },
+  disclaimer: {
+    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+    border: '2px solid rgba(248, 113, 113, 0.4)',
+    borderRadius: '16px',
+    padding: '16px',
+    marginBottom: '32px',
+    backdropFilter: 'blur(4px)'
+  },
+  disclaimerText: {
+    textAlign: 'center',
+    color: '#fca5a5',
+    fontSize: '14px',
+    fontWeight: 300,
+    margin: 0
+  },
+  robotsWaiting: {
+    textAlign: 'center',
+    marginBottom: '32px'
+  },
+  robotsWaitingMain: {
+    color: '#d1d5db',
+    fontSize: '16px',
+    fontWeight: 300,
+    marginBottom: '8px'
+  },
+  robotsWaitingSecondary: {
+    color: '#6b7280',
+    fontSize: '14px',
+    fontStyle: 'italic',
+    margin: 0
+  },
+  button: {
+    width: '100%',
+    padding: '16px 32px',
+    background: 'linear-gradient(to right, #ec4899, #a855f7, #22d3ee)',
+    borderRadius: '9999px',
+    fontWeight: 'bold',
+    fontSize: '20px',
+    color: 'white',
+    boxShadow: '0 0 30px rgba(236, 72, 153, 0.5)',
+    border: '2px solid rgba(236, 72, 153, 0.5)',
+    cursor: 'pointer',
+    transition: 'transform 0.2s, box-shadow 0.2s'
+  },
+  notEveryone: {
+    textAlign: 'center',
+    fontSize: '12px',
+    color: '#6b7280',
+    marginTop: '16px'
+  },
+  algoBox: {
+    backgroundColor: 'rgba(6, 182, 212, 0.1)',
+    border: '2px solid rgba(34, 211, 238, 0.4)',
+    borderRadius: '16px',
+    padding: '16px',
+    marginBottom: '24px',
+    position: 'relative',
+    overflow: 'hidden',
+    backdropFilter: 'blur(4px)'
+  },
+  algoTitle: {
+    fontSize: '14px',
+    color: '#a5f3fc',
+    marginBottom: '8px',
+    position: 'relative',
+    zIndex: 10
+  },
+  algoText: {
+    fontSize: '12px',
+    color: '#d1d5db',
+    position: 'relative',
+    zIndex: 10,
+    margin: 0
+  },
+  warningText: {
+    color: '#9ca3af',
+    fontSize: '14px',
+    marginBottom: '24px',
+    fontStyle: 'italic',
+    textAlign: 'center'
+  },
+  questionCounter: {
+    fontSize: '14px',
+    color: '#22d3ee',
+    marginBottom: '8px',
+    fontFamily: 'monospace'
+  },
+  progressBarContainer: {
+    width: '100%',
+    backgroundColor: 'rgba(31, 41, 55, 0.5)',
+    borderRadius: '9999px',
+    height: '12px',
+    marginBottom: '16px',
+    border: '1px solid rgba(139, 92, 246, 0.3)',
+    overflow: 'hidden'
+  },
+  progressBar: {
+    height: '12px',
+    borderRadius: '9999px',
+    transition: 'width 0.3s',
+    background: 'linear-gradient(to right, #ec4899, #a855f7, #22d3ee)',
+    boxShadow: '0 0 20px rgba(236, 72, 153, 0.6)'
+  },
+  questionTitle: {
+    fontSize: '28px',
+    fontWeight: 'bold',
+    background: 'linear-gradient(to right, #f9a8d4, #67e8f9)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    marginBottom: '8px'
+  },
+  robotsWatchingText: {
+    color: '#9ca3af',
+    fontSize: '14px',
+    margin: 0
+  },
+  optionButton: {
+    width: '100%',
+    padding: '16px 24px',
+    backgroundColor: 'rgba(88, 28, 135, 0.2)',
+    border: '2px solid rgba(139, 92, 246, 0.3)',
+    borderRadius: '16px',
+    fontWeight: 500,
+    color: 'white',
+    textAlign: 'left',
+    cursor: 'pointer',
+    transition: 'all 0.2s',
+    backdropFilter: 'blur(4px)',
+    fontSize: '16px'
+  },
+  loadingContainer: {
+    position: 'relative',
+    width: '96px',
+    height: '96px',
+    margin: '0 auto 24px'
+  },
+  loadingSpinner: {
+    position: 'absolute',
+    inset: 0,
+    border: '4px solid rgba(236, 72, 153, 0.3)',
+    borderTop: '4px solid #ec4899',
+    borderRadius: '50%',
+    animation: 'spin 1s linear infinite',
+    boxShadow: '0 0 30px rgba(236, 72, 153, 0.5)'
+  },
+  loadingSpinnerReverse: {
+    position: 'absolute',
+    inset: '8px',
+    border: '4px solid rgba(34, 211, 238, 0.3)',
+    borderTop: '4px solid #22d3ee',
+    borderRadius: '50%',
+    animation: 'spinReverse 1s linear infinite',
+    boxShadow: '0 0 20px rgba(34, 211, 238, 0.5)'
+  },
+  loadingHeart: {
+    position: 'absolute',
+    width: '32px',
+    height: '32px',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    color: '#f9a8d4',
+    fill: '#f9a8d4',
+    animation: 'pulse 2s ease-in-out infinite'
+  },
+  analyzingTitle: {
+    fontSize: '28px',
+    fontWeight: 'bold',
+    background: 'linear-gradient(to right, #f9a8d4, #67e8f9)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    marginBottom: '8px'
+  },
+  analyzingSubtitle: {
+    color: '#67e8f9',
+    fontSize: '14px',
+    margin: 0
+  },
+  analysisMessage: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    color: '#67e8f9',
+    fontSize: '14px',
+    backgroundColor: 'rgba(6, 182, 212, 0.1)',
+    border: '1px solid rgba(34, 211, 238, 0.3)',
+    borderRadius: '8px',
+    padding: '12px',
+    backdropFilter: 'blur(4px)',
+    animation: 'fadeIn 0.5s ease-out both',
+    boxShadow: '0 0 15px rgba(34, 211, 238, 0.2)'
+  },
+  backButton: {
+    position: 'absolute',
+    top: '16px',
+    left: '16px',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backdropFilter: 'blur(8px)',
+    padding: '8px 16px',
+    borderRadius: '9999px',
+    fontSize: '14px',
+    color: 'white',
+    border: '1px solid rgba(236, 72, 153, 0.5)',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s'
+  },
+  robotName: {
+    fontSize: '28px',
+    fontWeight: 'bold',
+    background: 'linear-gradient(to right, #f9a8d4, #67e8f9)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    margin: 0
+  },
+  badge: {
+    padding: '4px 12px',
+    backgroundColor: 'rgba(6, 182, 212, 0.2)',
+    border: '1px solid rgba(34, 211, 238, 0.4)',
+    borderRadius: '8px',
+    fontSize: '12px',
+    color: '#a5f3fc',
+    backdropFilter: 'blur(4px)'
+  },
+  specsBox: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    fontSize: '14px',
+    color: '#9ca3af',
+    marginBottom: '16px',
+    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+    padding: '12px',
+    borderRadius: '8px',
+    border: '1px solid rgba(139, 92, 246, 0.3)'
+  },
+  interestBadge: {
+    padding: '4px 12px',
+    backgroundColor: 'rgba(236, 72, 153, 0.2)',
+    border: '1px solid rgba(236, 72, 153, 0.3)',
+    borderRadius: '9999px',
+    fontSize: '12px',
+    color: '#f9a8d4'
+  },
+  resultsTitle: {
+    fontSize: '36px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: '8px',
+    background: 'linear-gradient(to right, #f9a8d4, #c084fc, #67e8f9)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text'
+  },
+  matchCountText: {
+    textAlign: 'center',
+    color: '#67e8f9',
+    marginBottom: '24px',
+    fontSize: '18px'
+  },
+  compatibilityBox: {
+    marginBottom: '24px',
+    padding: '20px',
+    background: 'linear-gradient(to right, rgba(236, 72, 153, 0.1), rgba(6, 182, 212, 0.1))',
+    border: '2px solid rgba(236, 72, 153, 0.4)',
+    borderRadius: '16px',
+    backdropFilter: 'blur(4px)'
+  },
+  compatibilityScore: {
+    fontSize: '28px',
+    fontWeight: 'bold',
+    background: 'linear-gradient(to right, #f9a8d4, #67e8f9)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    marginBottom: '4px'
+  },
+  sectionTitle: {
+    fontSize: '20px',
+    fontWeight: 'bold',
+    color: '#f9a8d4',
+    marginBottom: '16px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px'
+  },
+  matchCard: {
+    padding: '16px',
+    borderRadius: '16px',
+    cursor: 'pointer',
+    transition: 'all 0.2s',
+    border: '2px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 0 20px rgba(236, 72, 153, 0.3)'
+  },
+  rejectCard: {
+    backgroundColor: 'rgba(17, 24, 39, 0.5)',
+    padding: '16px',
+    borderRadius: '16px',
+    border: '2px solid rgba(55, 65, 81, 0.5)',
+    backdropFilter: 'blur(4px)'
+  },
+  eventInfoBox: {
+    backgroundColor: 'rgba(6, 182, 212, 0.1)',
+    border: '2px solid rgba(34, 211, 238, 0.4)',
+    borderRadius: '16px',
+    padding: '16px',
+    marginBottom: '24px',
+    backdropFilter: 'blur(4px)'
+  }
 };
 
 export default RobotProfiles;
